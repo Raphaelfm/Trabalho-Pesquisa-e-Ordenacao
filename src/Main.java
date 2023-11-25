@@ -8,8 +8,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         QuickSort ordenacao = new QuickSort(); // Ajuste o nome da classe aqui
 
-        String pastaEntrada = "D:\\Downloads\\ED_3SC1 - Copy (5)\\Trabalho\\src\\arquivos";
-        String pastaSaida = "D:\\Downloads\\ED_3SC1 - Copy (5)\\Trabalho\\src\\arquivosOrdenados\\quickSort";
+        String pastaEntrada = "src/arquivos";
+        String pastaSaida = "src/arquivosOrdenados/quickSort";
 
         System.out.println("Bem-vindo ao programa de ordenação!");
 
