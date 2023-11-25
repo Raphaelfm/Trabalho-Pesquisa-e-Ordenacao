@@ -1,57 +1,27 @@
 package ordenacao;
 
 import dados.Item;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
-public class QuickSort {
+import java.io.*;
+
+public class TrabalhaArquivos {
+    private String nomeMetodo = "";
     private Item[] vetor;
-    private int quant; // Certifique-se de que quant está declarado em algum lugar
-
-    // Métodos de ordenação
-    public void quicksort() {
-        if (vetor != null) { // Adicionado para verificar se o vetor está inicializado
-            ordena(0, quant - 1);
-        } else {
-            System.out.println("Vetor não inicializado. Certifique-se de ler o arquivo antes de chamar o quicksort.");
-        }
-    }
-
-    private void ordena(int esq, int dir) {
-        int i = esq, j = dir;
-        Item temp;
-        String pivo = vetor[(i + j) / 2].getChave(); // Alterado para String
-        do {
-            while (vetor[i].getChave().compareTo(pivo) < 0) // Usando compareTo para comparar strings
-                i++;
-            while (vetor[j].getChave().compareTo(pivo) > 0) // Usando compareTo para comparar strings
-                j--;
-            if (i <= j) {
-                temp = vetor[i];
-                vetor[i] = vetor[j];
-                vetor[j] = temp;
-                i++;
-                j--;
-            }
-        } while (i <= j);
-        if (esq < j)
-            ordena(esq, j);
-        if (dir > i)
-            ordena(i, dir);
-    }
+    private int quant;
 
     // Método para gerar arquivo ordenado
-    public void gerarArquivoOrdenado(String nomeEntrada, String nomeSaida) {
+    public void gerarArquivoOrdenado(String nomeEntrada, String nomeSaida, String nomeMetodo) {
         try {
             lerArquivo(nomeEntrada);
 
+            MetodosOrdenacao quick = new MetodosOrdenacao(vetor);
+            this.nomeMetodo = nomeMetodo;
+
             if (quant > 0) { // Verifica se há itens para ordenar
-                quicksort();
+                quick.ordenacao(quant, nomeMetodo);
+
                 escreverArquivo(nomeSaida);
-                System.out.println("Arquivos ordenados usando quicksort!");
+                System.out.printf("Arquivos ordenados usando %s!\n", nomeMetodo);
             } else {
                 System.out.println("Nenhum dado encontrado no arquivo. Não há nada para ordenar.");
             }

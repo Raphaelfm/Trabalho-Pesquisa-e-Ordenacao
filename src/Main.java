@@ -1,28 +1,35 @@
 // Main.java
 import java.io.File;
 import java.util.Scanner;
-import ordenacao.QuickSort; // Ajuste o nome da classe aqui
+
+import ordenacao.TrabalhaArquivos;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        QuickSort ordenacao = new QuickSort(); // Ajuste o nome da classe aqui
+        TrabalhaArquivos ordenacao = new TrabalhaArquivos(); // Ajuste o nome da classe aqui
 
         String pastaEntrada = "src/arquivos";
-        String pastaSaida = "src/arquivosOrdenados/quickSort";
+        String pastaSaidaQuickSort = "src/arquivosOrdenados/quickSort";
+        String pastaSaidaShellSort= "src/arquivosOrdenados/shellSort";
 
         System.out.println("Bem-vindo ao programa de ordenação!");
 
         int opcao;
         do {
             exibirMenu();
-            System.out.print("Escolha o método de ordenação (1 para quicksort, 0 para sair): ");
+            System.out.print("Escolha o método de ordenação (1 para quickSort, " +
+                    "2 para shellSort, 0 para sair): ");
             opcao = scanner.nextInt();
 
             switch (opcao) {
                 case 1:
-                    processarArquivos(ordenacao, pastaEntrada, pastaSaida);
-                    System.out.println("Arquivos ordenados usando quicksort!");
+                    processarArquivos(ordenacao, pastaEntrada, pastaSaidaQuickSort, "quickSort");
+                    System.out.println("Arquivos ordenados usando quickSort!");
+                    break;
+                case 2:
+                    processarArquivos(ordenacao, pastaEntrada, pastaSaidaShellSort, "shellSort");
+                    System.out.println("Arquivos ordenados usando shellSort!");
                     break;
                 case 0:
                     System.out.println("Saindo do programa. Até mais!");
@@ -41,7 +48,7 @@ public class Main {
         System.out.println("0. Sair");
     }
 
-    private static void processarArquivos(QuickSort ordenacao, String pastaEntrada, String pastaSaida) {
+    private static void processarArquivos(TrabalhaArquivos ordenacao, String pastaEntrada, String pastaSaida, String nomeMetodo) {
         File diretorioEntrada = new File(pastaEntrada);
         File diretorioSaida = new File(pastaSaida);
 
@@ -63,8 +70,8 @@ public class Main {
                     String caminhoArquivoEntrada = diretorioEntrada.getPath() + File.separator + nomeArquivo;
                     String caminhoArquivoSaida = diretorioSaida.getPath() + File.separator + nomeArquivo.replace(".txt", "_ordenado.txt");
 
-                    // Remova a chamada ordenacao.gerarArquivoOrdenado(caminhoArquivoEntrada, caminhoArquivoSaida);
-                    ordenacao.gerarArquivoOrdenado(caminhoArquivoEntrada, caminhoArquivoSaida);
+
+                    ordenacao.gerarArquivoOrdenado(caminhoArquivoEntrada, caminhoArquivoSaida, nomeMetodo);
                 }
             }
         } else {
