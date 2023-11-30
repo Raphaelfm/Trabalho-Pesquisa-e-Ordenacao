@@ -4,6 +4,7 @@ import dados.Item;
 import dados.NoABB;
 
 import java.io.*;
+import java.util.LinkedList;
 
 public class TrabalhaArvores {
     private ArvoreABB arvoreABB;
@@ -49,14 +50,14 @@ public class TrabalhaArvores {
             NoABB noEncontrado = arvoreABB.pesquisar(cpf);
 
             if (noEncontrado != null) {
-                Item item = noEncontrado.getItem();
+                LinkedList<Item> itens = noEncontrado.getItens();
 
-                if (item != null) {
-                    escreverDadosNoArquivo(bw, item);
-                } else {
-                    // Lidere com a situação em que o item é nulo
-                    bw.write("CPF " + cpf + ": ITEM NULO");
-                    bw.newLine();
+                if (itens != null && !itens.isEmpty()) {
+                    for (Item item : itens) {
+                        escreverDadosNoArquivo(bw, noEncontrado, cpf);
+                    }
+
+                    //arvoreABB.imprimirArvore("01682240980");
                 }
             } else {
                 bw.write("CPF " + cpf + ": INEXISTENTE");
@@ -66,6 +67,7 @@ public class TrabalhaArvores {
 
         System.out.println("Arquivo ABB gerado com sucesso!");
     }
+
 
     public void lerArquivo(String nomeArquivo) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(nomeArquivo));
@@ -96,25 +98,45 @@ public class TrabalhaArvores {
         br.close();
     }
 
+    private void escreverDadosNoArquivo(BufferedWriter bw, NoABB no, String cpfProcurado) throws IOException {
+        if (no != null) {
+            if (no.getItens().get(0).getCpf().equals(cpfProcurado)) {
+                bw.write("CPF " + no.getItens().get(0).getCpf() + ":");
+                bw.newLine();
 
-    private void escreverDadosNoArquivo(BufferedWriter bw, Item item) throws IOException {
-        bw.write("CPF " + item.getChave() + ":");
-        bw.newLine();
-        bw.write("Agencia " + item.getAgencia() + " Conta " + item.getNumero() + " Saldo: " + item.getSaldo());
-        bw.newLine();
-        // Continue escrevendo os outros dados conforme necessário
-        // Lembre-se de calcular o saldo total corretamente
-        // Por exemplo, crie uma variável para acumular o saldo total e some a cada conta do mesmo CPF
-        double saldoTotal = item.getSaldo(); // Inicializa com o saldo da primeira conta
-        for (int i = 0; i < quant; i++) {
-            if (vetor[i].getChave().equals(item.getChave())) {
-                saldoTotal += vetor[i].getSaldo();
+                double saldoTotal = percorrerArvore(bw, no, cpfProcurado);
+
+                bw.write("Saldo total: " + saldoTotal);
+                bw.newLine();
+            } else {
+                // Se o CPF não for encontrado, gravar a informação correspondente
+                bw.write("CPF " + cpfProcurado + ":");
+                bw.newLine();
+                bw.write("CPF não encontrado.");
+                bw.newLine();
             }
+
+            bw.flush();
         }
-        bw.write("Saldo total: " + saldoTotal);
-        bw.newLine();
     }
 
-    // Adicione outros métodos da árvore que você possa precisar nesta classe
-    // Exemplo: métodos para inserção, pesquisa, balanceamento, etc.
+    private double percorrerArvore(BufferedWriter bw, NoABB no, String cpfProcurado) throws IOException {
+        double saldoTotal = 0;
+
+        if (no != null) {
+            if (no.getItens().get(0).getCpf().equals(cpfProcurado)) {
+                for (Item conta : no.getItens()) {
+                    bw.write("Agencia " + conta.getAgencia() + " Conta " + conta.getNumero() + " Saldo: " + conta.getSaldo());
+                    bw.newLine();
+                    saldoTotal += conta.getSaldo();
+                }
+            }
+
+            // Percorre os nós à esquerda e à direita e acumula os saldos
+            saldoTotal += percorrerArvore(bw, no.getEsq(), cpfProcurado);
+            saldoTotal += percorrerArvore(bw, no.getDir(), cpfProcurado);
+        }
+
+        return saldoTotal;
+    }
 }

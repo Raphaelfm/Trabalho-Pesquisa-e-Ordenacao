@@ -20,9 +20,9 @@ public class ArvoreABB {
     private NoABB pesquisar(String cpf, NoABB no) {
         if (no == null) {
             return null;
-        } else if (cpf.equals(no.getItem().getCpf())) {
+        } else if (cpf.equals(no.getItens().get(0).getCpf())) {
             return no;
-        } else if (cpf.compareTo(no.getItem().getCpf()) > 0) {
+        } else if (cpf.compareTo(no.getItens().get(0).getCpf()) > 0) {
             return pesquisar(cpf, no.getDir());
         } else {
             return pesquisar(cpf, no.getEsq());
@@ -31,8 +31,14 @@ public class ArvoreABB {
 
     public boolean inserir(Item item) {
         NoABB aux = pesquisar(item.getCpf());
+
+        if(item.getCpf().equals("01682240980")){
+            int q = 0;
+        }
+
         if (aux != null) {
-            return false;
+            aux.getItens().add(item); // Adiciona a conta à LinkedList do nó existente
+            return true;
         } else {
             this.raiz = inserir(item, this.raiz);
             return true;
@@ -43,13 +49,14 @@ public class ArvoreABB {
         if (no == null) {
             no = new NoABB(item);
             this.quant++;
-        } else if (item.getCpf().compareTo(no.getItem().getCpf()) > 0) {
+        } else if (item.getCpf().compareTo(no.getItens().get(0).getCpf()) > 0) {
             no.setDir(inserir(item, no.getDir()));
         } else {
             no.setEsq(inserir(item, no.getEsq()));
         }
         return no;
     }
+
 
     // Métodos de balanceamento
     public VetorItem camCentral() {
@@ -61,7 +68,9 @@ public class ArvoreABB {
     private VetorItem fazCamCentral(NoABB no, VetorItem vetor) {
         if (no != null) {
             vetor = fazCamCentral(no.getEsq(), vetor);
-            vetor.inserir(no.getItem());
+            for (Item item : no.getItens()) {
+                vetor.inserir(item);
+            }
             vetor = fazCamCentral(no.getDir(), vetor);
         }
         return vetor;
@@ -92,8 +101,31 @@ public class ArvoreABB {
     private void imprimirEmOrdem(NoABB no) {
         if (no != null) {
             imprimirEmOrdem(no.getEsq());
-            System.out.println(no.getItem().getCpf()); // ou outra informação que você queira imprimir
+
+            for (Item item : no.getItens()) {
+                System.out.println(item.getCpf()); // ou outra informação que você queira imprimir
+            }
+
             imprimirEmOrdem(no.getDir());
+        }
+    }
+
+    public void imprimirArvore(String cpf) {
+        imprimirArvore(this.raiz, cpf);
+    }
+
+    private void imprimirArvore(NoABB no, String cpf) {
+        if (no != null) {
+            imprimirArvore(no.getEsq(), cpf);
+
+            if (no.getItens().get(0).getCpf().equals(cpf)) {
+                System.out.println("CPF: " + no.getItens().get(0).getCpf());
+                for (Item item : no.getItens()) {
+                    System.out.println("  Agencia " + item.getAgencia() + " Conta " + item.getNumero() + " Saldo: " + item.getSaldo());
+                }
+            }
+
+            imprimirArvore(no.getDir(), cpf);
         }
     }
 }

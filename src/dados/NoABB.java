@@ -1,20 +1,20 @@
 package dados;
 
+import java.util.LinkedList;
+
 public class NoABB {
-    private Item item;
+    private LinkedList<Item> itens;
     private NoABB esq, dir;
 
     public NoABB(Item item) {
-        this.item = item;
+        this.itens = new LinkedList<>();
+        this.itens.add(item);
         this.esq = this.dir = null;
     }
 
-    public Item getItem() {
-        return item;
-    }
 
-    protected void setItem(Item novo) {
-        this.item = novo;
+    public LinkedList<Item> getItens() {
+        return itens;
     }
 
     public NoABB getEsq() {
@@ -33,4 +33,3 @@ public class NoABB {
         this.dir = dir;
     }
 }
-
