@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 import arvoreABB.TrabalhaArvores;
@@ -8,6 +9,7 @@ import arvoreAVL.NoAVL;
 import arvoreAVL.TrabalhaArvoresAVL;
 import dados.Item;
 import dados.NoABB;
+import hashing.TabelaHash;
 import ordenacao.TrabalhaArquivos;
 import arvoreABB.ArvoreABB;
 
@@ -18,12 +20,14 @@ public class Main {
         TrabalhaArvores trabalhaArvores = new TrabalhaArvores();
         ArvoreABB arvoreABB = new ArvoreABB();
         TrabalhaArvoresAVL trabalhaArvoresAVL = new TrabalhaArvoresAVL();
+        TabelaHash tabelaHash;
 
         String pastaEntrada = "src/arquivos";
         String pastaSaidaQuickSort = "src/arquivosOrdenados/quickSort";
         String pastaSaidaShellSort = "src/arquivosOrdenados/shellSort";
         String pastaSaidaABB = "src/arquivosArvores/ABB"; // Adicione essa linha
         String pastaSaidaAVL = "src/arquivosArvores/AVL";
+        String pastaSaidaHash = "src/arquivosHash";
 
 //        ArvoreABB arvore = criarArvoreABB(trabalhaArvores, "D:\\Downloads\\ED_3SC1 - Copy (5)\\Trabalho\\src\\arquivos\\conta1000.txt");
 //        arvore.imprimirEmOrdem();
@@ -52,6 +56,10 @@ public class Main {
                 case 4:
                     processarArvoreAVL(trabalhaArvoresAVL, pastaEntrada, pastaSaidaAVL, "arvoreAVL");
                     System.out.println("Operações com Árvore ABB concluídas!");
+                    break;
+                case 5:
+                    processarTabelaHash(pastaEntrada, pastaSaidaHash, "tabelaHash");
+                    System.out.println("Operações com Tabela Hash concluídas!");
                     break;
                 case 0:
                     System.out.println("Saindo do programa. Até mais!");
@@ -201,4 +209,37 @@ public class Main {
 
         return arvoreAVL;
     }
+
+    private static void processarTabelaHash(String pastaEntrada, String pastaSaida, String nomeMetodo) throws IOException {
+        File diretorioEntrada = new File(pastaEntrada);
+        File diretorioSaida = new File(pastaSaida);
+
+        if (!diretorioSaida.exists()) {
+            diretorioSaida.mkdir();
+        }
+
+        File[] arquivos = diretorioEntrada.listFiles();
+
+        if (arquivos != null) {
+            for (File arquivo : arquivos) {
+                if (arquivo.isFile() && arquivo.getName().endsWith(".txt")) {
+                    String nomeArquivo = arquivo.getName();
+                    String caminhoArquivoEntrada = diretorioEntrada.getPath() + File.separator + nomeArquivo;
+
+                    int tamanhoTabela = TabelaHash.calcularTamanhoTabela(caminhoArquivoEntrada);
+                    TabelaHash tabelaHash = new TabelaHash(tamanhoTabela);
+
+                    // Lê o arquivo e insere os itens na tabela hash
+                    tabelaHash.lerArquivo(caminhoArquivoEntrada);
+
+                    // Gera o arquivo da tabela hash
+                    tabelaHash.geraArquivo(pastaSaida, nomeArquivo);
+                }
+            }
+        } else {
+            System.out.println("Nenhum arquivo encontrado na pasta de entrada.");
+        }
+    }
+
+
 }
