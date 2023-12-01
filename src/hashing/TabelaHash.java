@@ -70,9 +70,8 @@ public class TabelaHash {
     }
 
     // Método para gerar os arquivos com base nos registros armazenados
-    // Método para gerar o arquivo com base nos registros armazenados
-    public void geraArquivo(String caminhoSaida, String nomeArquivoEntrada) throws IOException {
-        String nomeArquivoSaida = caminhoSaida + File.separator + nomeArquivoEntrada.replace(".txt", "_hash.txt");
+    public void geraArquivo(String caminhoSaida, String nomeArquivo) throws IOException {
+        String nomeArquivoSaida = caminhoSaida + File.separator + nomeArquivo.replace(".txt", "_hash.txt");
         File diretorioSaida = new File(caminhoSaida);
 
         if (!diretorioSaida.exists()) {
@@ -80,24 +79,27 @@ public class TabelaHash {
         }
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivoSaida));
+        File nomeArquivoEntradaCPF = new File("src/CPFs/CPF.txt");
+        // Lê o arquivo de CPFs linha a linha
+        BufferedReader brCPF = new BufferedReader(new FileReader(nomeArquivoEntradaCPF));
+        String cpf;
 
-        for (int indice = 0; indice < tamanho; indice++) {
-            LinkedList<Item[]> lista = tabela[indice];
+        while ((cpf = brCPF.readLine()) != null) {
+            LinkedList<Item> itensAssociados = pesquisa(cpf); // Pesquisa o CPF na tabela hash
 
-            for (Item[] elementos : lista) {
-                String cpf = elementos[0].getCpf();
+            if (itensAssociados != null) {
+                // CPF encontrado na tabela hash, escreve os detalhes no arquivo de saída
                 writer.write("CPF " + cpf + ":");
                 writer.newLine();
 
                 double saldoTotal = 0;
+                boolean cpfEncontrado = false;
 
-                boolean cpfEncontrado = false; // Variável para verificar se o CPF foi encontrado
-
-                for (Item item : elementos) {
+                for (Item item : itensAssociados) {
                     writer.write("Agencia " + item.getAgencia() + " Conta " + item.getNumero() + " Saldo: " + item.getSaldo());
                     writer.newLine();
                     saldoTotal += item.getSaldo();
-                    cpfEncontrado = true; // Marca o CPF como encontrado
+                    cpfEncontrado = true;
                 }
 
                 if (!cpfEncontrado) {
@@ -107,9 +109,16 @@ public class TabelaHash {
                     writer.write("Saldo total: " + saldoTotal);
                     writer.newLine();
                 }
+            } else {
+                // CPF não encontrado na tabela hash, escreve "INEXISTENTE" no arquivo de saída
+                writer.write("CPF " + cpf + ":");
+                writer.newLine();
+                writer.write("INEXISTENTE");
+                writer.newLine();
             }
         }
 
+        brCPF.close();
         writer.close();
     }
 

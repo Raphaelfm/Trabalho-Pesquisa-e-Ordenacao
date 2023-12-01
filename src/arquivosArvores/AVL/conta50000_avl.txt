@@ -2459,11 +2459,3 @@ Saldo total: 18423.0
 CPF 90979893127:
 Agencia 17858 Conta 01008689 Saldo: 13064.0
 Saldo total: 13064.0
-CPF 01682240980:
-Agencia 12403 Conta 01044299 Saldo: 8465.0
-Agencia 12889 Conta 01076184 Saldo: 16090.0
-Saldo total: 24555.0
-CPF 01682240980:
-Agencia 12403 Conta 01044299 Saldo: 8465.0
-Agencia 12889 Conta 01076184 Saldo: 16090.0
-Saldo total: 24555.0

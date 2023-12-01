@@ -25,7 +25,7 @@ public class Main {
         String pastaEntrada = "src/arquivos";
         String pastaSaidaQuickSort = "src/arquivosOrdenados/quickSort";
         String pastaSaidaShellSort = "src/arquivosOrdenados/shellSort";
-        String pastaSaidaABB = "src/arquivosArvores/ABB"; // Adicione essa linha
+        String pastaSaidaABB = "src/arquivosArvores/ABB"; //
         String pastaSaidaAVL = "src/arquivosArvores/AVL";
         String pastaSaidaHash = "src/arquivosHash";
 
