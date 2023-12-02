@@ -19,6 +19,10 @@ public class Item {
 		return cpf;
 	}
 
+	public String getChaveComposta() {
+		return cpf + agencia + numero; // Concatena CPF, agência e número da conta
+	}
+
 	// Métodos para obter e definir valores
 	public String getAgencia() {
 		return agencia;

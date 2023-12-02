@@ -32,11 +32,11 @@ public class MetodosOrdenacao {
     private void quickSort(int esq, int dir) {
         int i = esq, j = dir;
         Item temp;
-        String pivo = vetor[(i + j) / 2].getChave(); // Alterado para String
+        String pivo = vetor[(i + j) / 2].getChaveComposta(); // Alterado para String
         do {
-            while (vetor[i].getChave().compareTo(pivo) < 0) // Usando compareTo para comparar strings
+            while (vetor[i].getChaveComposta().compareTo(pivo) < 0) // Usando compareTo para comparar strings
                 i++;
-            while (vetor[j].getChave().compareTo(pivo) > 0) // Usando compareTo para comparar strings
+            while (vetor[j].getChaveComposta().compareTo(pivo) > 0) // Usando compareTo para comparar strings
                 j--;
             if (i <= j) {
                 temp = vetor[i];
@@ -64,7 +64,7 @@ public class MetodosOrdenacao {
             for (i = h; i < quant; i++) {
                 temp = this.vetor[i];
                 j = i;
-                while (this.vetor[j - h].getChave().compareTo(temp.getChave()) > 0) {
+                while (this.vetor[j - h].getChaveComposta().compareTo(temp.getChave()) > 0) {
                     this.vetor[j] = this.vetor[j - h];
                     j -= h;
                     if (j < h) {

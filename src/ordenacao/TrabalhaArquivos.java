@@ -14,11 +14,11 @@ public class TrabalhaArquivos {
         try {
             lerArquivo(nomeEntrada);
 
-            MetodosOrdenacao quick = new MetodosOrdenacao(vetor);
+            MetodosOrdenacao ordenacao = new MetodosOrdenacao(vetor);
             this.nomeMetodo = nomeMetodo;
 
             if (quant > 0) { // Verifica se há itens para ordenar
-                quick.ordenacao(quant, nomeMetodo);
+                ordenacao.ordenacao(quant, nomeMetodo);
 
                 escreverArquivo(nomeSaida);
                 System.out.printf("Arquivos ordenados usando %s!\n", nomeMetodo);
